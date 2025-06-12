@@ -30,7 +30,7 @@ app.get("/", async (_req, res) => {
         <link href="/styles.css" rel="stylesheet" />
         <title>Ebooks</title>
       </head>
-      <body class="font-serif">${html}</body>
+      <body class="font-serif bg-[#e9e7e0]">${html}</body>
     </html>
   `)
 })

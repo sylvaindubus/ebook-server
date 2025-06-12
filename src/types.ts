@@ -3,4 +3,5 @@ export type Ebook = {
   author: string
   language: string
   filePath: string
+  coverUrl?: string
 }
