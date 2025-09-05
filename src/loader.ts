@@ -3,6 +3,7 @@ import fs from "fs"
 import path from "path"
 
 import { Ebook } from "./types"
+import sharp from "sharp"
 
 export const findCoverImage = (epub: EPub): Promise<{ data: Buffer; mimeType: string }> => {
   return new Promise((resolve, reject) => {
@@ -54,7 +55,9 @@ export const loadEpubMetadata = (filePath: string): Promise<Ebook> => {
       let coverUrl: string | undefined
       try {
         const { data, mimeType } = await findCoverImage(epub)
-        coverUrl = `data:${mimeType};base64,${data.toString("base64")}`
+        const resizedBuffer = await sharp(data).resize({ width: 200 }).toBuffer()
+        const base64 = resizedBuffer.toString("base64")
+        coverUrl = `data:${mimeType};base64,${base64}`
       } catch {
         coverUrl = undefined
       }

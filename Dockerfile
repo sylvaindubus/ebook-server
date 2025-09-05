@@ -6,6 +6,8 @@ COPY package*.json ./
 RUN npm install
 
 COPY tsconfig.json ./
+COPY tailwind.config.js ./
+COPY src/styles/tailwind.css ./src/styles/tailwind.css
 COPY src ./src
 
 RUN npm run build

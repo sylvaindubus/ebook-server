@@ -1,9 +1,13 @@
 module.exports = {
   content: [
-    "./src/**/*"
+    "./src/**/*.{js,ts,jsx,tsx,html}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        serif: ['"Literata"', 'serif'],
+      },
+    },
   },
   plugins: [],
 };

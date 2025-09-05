@@ -8,7 +8,7 @@ import { loadEbooks } from "./loader"
 
 const app = express()
 const PORT = process.env.PORT || 1455
-const EBOOKS_PATH = process.env.EBOOKS_PATH || "/ebooks"
+const EBOOKS_PATH = process.env.EBOOKS_PATH || "./samples"
 
 app.use(express.static(path.resolve("public")))
 
@@ -22,17 +22,19 @@ app.get("/", async (_req, res) => {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Besley&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap" rel="stylesheet">
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
         <link rel="manifest" href="/site.webmanifest">
         <link href="/styles.css" rel="stylesheet" />
         <title>Ebooks</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
       </head>
-      <body class="font-serif bg-[#e9e7e0]">${html}</body>
+      <body class="font-serif bg-[#f7f7f7] text-lg">${html}</body>
     </html>
   `)
+  return
 })
 
 app.get("/download/:filename", (req: Request<{ filename: string }>, res: Response) => {
@@ -49,6 +51,14 @@ app.get("/download/:filename", (req: Request<{ filename: string }>, res: Respons
       res.status(404).send("File cannot be found")
     }
   })
+})
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err)
+})
+
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled Rejection:", reason)
 })
 
 app.listen(PORT, () => console.log(`✅ Listening on http://localhost:${PORT}`))
