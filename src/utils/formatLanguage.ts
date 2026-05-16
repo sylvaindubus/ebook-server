@@ -1,3 +1,5 @@
+import capitalizeWords from "./capitalizeWords"
+
 const formatLanguage = (lang: string) => {
   switch (lang) {
     case "en":
@@ -6,7 +8,7 @@ const formatLanguage = (lang: string) => {
     case "fr":
       return "French"
     default:
-      return lang.charAt(0).toUpperCase() + lang.slice(1)
+      return capitalizeWords(lang)
   }
 }
 
