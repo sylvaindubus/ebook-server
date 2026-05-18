@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:20-slim AS builder
 
 WORKDIR /app
 
@@ -7,10 +7,21 @@ RUN npm install
 
 COPY tsconfig.json ./
 COPY tailwind.config.js ./
-COPY src/styles/tailwind.css ./src/styles/tailwind.css
+COPY postcss.config.js ./
 COPY src ./src
+COPY public ./public
 
 RUN npm run build
 
+FROM node:20-slim
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install --omit=dev
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/public ./public
+
 EXPOSE 1455
-CMD ["npm", "start"]
+CMD ["node", "dist/server.js"]
