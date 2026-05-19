@@ -12,8 +12,9 @@ const EBOOKS_PATH = process.env.EBOOKS_PATH || "./samples"
 
 app.use(express.static(path.resolve("public")))
 
-app.get("/", async (_req, res) => {
-  const ebooks = await loadEbooks(EBOOKS_PATH)
+app.get("/", async (req, res) => {
+  const skipCache = "refresh" in req.query
+  const ebooks = await loadEbooks(EBOOKS_PATH, { skipCache })
 
   const html = renderToString(<App ebooks={ebooks} />)
   const serializedData = JSON.stringify({ ebooks }).replace(/</g, "\\u003c")

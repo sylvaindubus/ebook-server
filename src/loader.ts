@@ -30,8 +30,8 @@ const defaultCacheTtl = process.env.NODE_ENV === "production" ? "PT5M" : "PT0S"
 const CACHE_TTL_MS = parseIsoDuration(process.env.CACHE_TTL || defaultCacheTtl)
 const cache = new Map<string, { expiresAt: number; ebooks: Ebook[] }>()
 
-export const loadEbooks = async (folderPath: string) => {
-  if (CACHE_TTL_MS !== null) {
+export const loadEbooks = async (folderPath: string, options: { skipCache?: boolean } = {}) => {
+  if (CACHE_TTL_MS !== null && !options.skipCache) {
     const cached = cache.get(folderPath)
     if (cached && cached.expiresAt > Date.now()) {
       return cached.ebooks
