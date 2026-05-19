@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const App = ({ ebooks }: Props) => (
-  <main className="p-8 max-w-[1920px] mx-auto">
+  <main className="p-4 md:p-8 max-w-[1920px] mx-auto">
     <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-center dark:text-white text-black">
       Ebooks
     </h1>
@@ -17,9 +17,9 @@ export const App = ({ ebooks }: Props) => (
       <table className="w-full border-collapse">
         <thead>
           <tr className="border-b-2 border-gray-300 dark:border-gray-600">
-            <th className="text-left px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">Auteur</th>
-            <th className="text-left px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">Titre</th>
-            <th className="text-left px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">Langue</th>
+            <th className="text-left p-4 md:px-6 font-semibold text-gray-700 dark:text-gray-300">Auteur</th>
+            <th className="text-left p-4 md:px-6 font-semibold text-gray-700 dark:text-gray-300">Titre</th>
+            <th className="hidden md:table-cell text-left p-4 md:px-6 font-semibold text-gray-700 dark:text-gray-300">Langue</th>
           </tr>
         </thead>
         <tbody>
@@ -28,8 +28,8 @@ export const App = ({ ebooks }: Props) => (
             const capitalizedAuthor = capitalizeWords(ebook.author);
             return (
               <tr key={ebook.filePath} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                <td className="px-6 py-4 text-gray-900 dark:text-gray-100">{capitalizedAuthor}</td>
-                <td className="px-6 py-4">
+                <td className="p-4 md:px-6 text-gray-900 dark:text-gray-100">{capitalizedAuthor}</td>
+                <td className="p-4 md:px-6">
                   <a
                     href={`/download/${path.basename(ebook.filePath)}`}
                     title={`Download ${ebook.title}`}
@@ -38,7 +38,7 @@ export const App = ({ ebooks }: Props) => (
                     {ebook.title}
                   </a>
                 </td>
-                <td className="px-6 py-4 text-gray-600 dark:text-gray-400">
+                <td className="hidden md:table-cell p-4 md:px-6 text-gray-600 dark:text-gray-400">
                   {formattedLanguage && (
                     <span className="text-sm">{formattedLanguage}</span>
                   )}
