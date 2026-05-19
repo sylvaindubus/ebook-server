@@ -6,9 +6,11 @@
     "dev": "concurrently \"npm:dev:*\"",
     "dev:server": "nodemon --watch src --ext ts,tsx --exec ts-node src/server.tsx",
     "dev:css": "tailwindcss -i ./src/styles/tailwind.css -o ./public/styles.css --watch",
+    "dev:client": "esbuild src/client.tsx --bundle --outfile=public/client.js --watch",
     "build": "concurrently \"npm:build:*\"",
     "build:server": "tsc",
     "build:css": "tailwindcss -i ./src/styles/tailwind.css -o ./public/styles.css",
+    "build:client": "esbuild src/client.tsx --bundle --minify --outfile=public/client.js",
     "start": "node dist/server.js"
   },
   "dependencies": {
@@ -23,6 +25,7 @@
     "@types/react-dom": "^19.1.6",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.2",
+    "esbuild": "^0.24.2",
     "nodemon": "^3.1.10",
     "postcss": "^8.5.4",
     "tailwindcss": "^3.4.17",

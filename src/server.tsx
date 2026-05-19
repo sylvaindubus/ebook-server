@@ -16,6 +16,7 @@ app.get("/", async (_req, res) => {
   const ebooks = await loadEbooks(EBOOKS_PATH)
 
   const html = renderToString(<App ebooks={ebooks} />)
+  const serializedData = JSON.stringify({ ebooks }).replace(/</g, "\\u003c")
   res.send(`
     <!DOCTYPE html>
     <html>
@@ -31,7 +32,11 @@ app.get("/", async (_req, res) => {
         <title>Ebooks</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
       </head>
-      <body class="font-serif bg-[#f7f7f7] text-lg">${html}</body>
+      <body class="font-serif bg-[#f7f7f7] text-lg">
+        <div id="root">${html}</div>
+        <script>window.__INITIAL_DATA__ = ${serializedData};</script>
+        <script src="/client.js" defer></script>
+      </body>
     </html>
   `)
   return
