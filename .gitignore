@@ -34,3 +34,6 @@ Thumbs.db
 # Docker
 docker-data/
 *.pid
+
+# Local scripts (deploy etc.)
+scripts/

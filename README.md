@@ -12,7 +12,7 @@ A simple server-side rendered (SSR) Node.js app using Express and React, display
 - In-memory cache of parsed metadata to avoid re-reading every EPUB on each request
 - Styled with [Tailwind CSS](https://tailwindcss.com/)
 - Download endpoint for each file (`/download/:filename`)
-- Lightweight Docker setup using `node:20-slim`
+- Lightweight Docker setup using `node:24-slim`
 
 ---
 
