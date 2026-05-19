@@ -23,5 +23,8 @@ RUN npm install --omit=dev
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/public ./public
 
+ENV NODE_ENV=production
+ENV CACHE_TTL=PT5M
+
 EXPOSE 1455
 CMD ["node", "dist/server.js"]
