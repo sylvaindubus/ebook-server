@@ -1,30 +1,19 @@
-import EPub from "epub"
+import { EPub } from "epub"
 import fs from "fs"
 import path from "path"
 
 import { Ebook } from "./types"
 
-export const loadEpubMetadata = (filePath: string): Promise<Ebook> => {
-  return new Promise((resolve, reject) => {
-    const epub = new EPub(filePath)
+export const loadEpubMetadata = async (filePath: string): Promise<Ebook> => {
+  const epub = new EPub(filePath)
+  await epub.parse()
 
-    epub.on("error", (err) => {
-      reject(err)
-    })
-
-    epub.on("end", async () => {
-      const metadata: Ebook = {
-        title: epub.metadata.title || path.basename(filePath),
-        author: epub.metadata.creator || "N/A",
-        language: epub.metadata.language || "N/A",
-        filePath,
-      }
-
-      return resolve(metadata)
-    })
-
-    epub.parse()
-  })
+  return {
+    title: epub.metadata.title || path.basename(filePath),
+    author: epub.metadata.creator || "N/A",
+    language: epub.metadata.language || "N/A",
+    filePath,
+  }
 }
 
 export const loadEbooks = async (folderPath: string) => {
