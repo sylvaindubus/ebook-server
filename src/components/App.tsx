@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import formatLanguage from "../utils/formatLanguage";
 import capitalizeWords from "../utils/capitalizeWords";
 import { Chevron } from "./Chevron";
@@ -15,19 +15,26 @@ type SortDir = "asc" | "desc";
 const collator = new Intl.Collator("fr", { sensitivity: "base" });
 
 export const App = ({ ebooks }: Props) => {
+  const [hydrated, setHydrated] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>("author");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
   const sortedEbooks = useMemo(() => {
+    if (!hydrated) return ebooks;
     const copy = [...ebooks];
     copy.sort((a, b) => {
       const cmp = collator.compare(a[sortKey] || "", b[sortKey] || "");
       return sortDir === "asc" ? cmp : -cmp;
     });
     return copy;
-  }, [ebooks, sortKey, sortDir]);
+  }, [ebooks, sortKey, sortDir, hydrated]);
 
   const handleSort = (key: SortKey) => {
+    if (!hydrated) return;
     if (key === sortKey) {
       setSortDir(sortDir === "asc" ? "desc" : "asc");
     } else {
@@ -37,11 +44,11 @@ export const App = ({ ebooks }: Props) => {
   };
 
   const renderArrow = (key: SortKey) => {
-    if (key !== sortKey) return null;
+    if (!hydrated || key !== sortKey) return null;
     return <Chevron direction={sortDir === "asc" ? "up" : "down"} />;
   };
 
-  const headerClass = "text-left p-4 md:px-6 font-semibold text-gray-700 dark:text-gray-300 cursor-pointer select-none hover:text-black dark:hover:text-white";
+  const headerClass = `text-left p-4 md:px-6 font-semibold text-gray-700 dark:text-gray-300 select-none ${hydrated ? "cursor-pointer hover:text-black dark:hover:text-white" : ""}`;
   const headerInnerClass = "inline-flex items-center gap-2 leading-none";
 
   return (

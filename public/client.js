@@ -19605,10 +19605,10 @@
 
   // src/components/Chevron.tsx
   var import_jsx_runtime = __toESM(require_jsx_runtime());
-  var Chevron = ({ direction = "up", className = "w-3 h-3" }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+  var Chevron = ({ direction = "up", className = "inline-block w-3 h-3" }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
     "svg",
     {
-      className: `inline-block transition-transform ${className} ${direction === "down" ? "rotate-180" : ""}`,
+      className,
       viewBox: "-1 -2 12 10",
       fill: "none",
       stroke: "currentColor",
@@ -19616,38 +19616,39 @@
       strokeLinecap: "round",
       strokeLinejoin: "round",
       "aria-hidden": "true",
-      children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M1 5 L5 1 L9 5" })
+      children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: direction === "down" ? "M1 1 L5 5 L9 1" : "M1 5 L5 1 L9 5" })
     }
   );
 
   // src/components/ScrollButtons.tsx
   var import_jsx_runtime2 = __toESM(require_jsx_runtime());
-  var OVERLAP_PX = 40;
-  var scrollByViewport = (direction) => {
-    const delta = (window.innerHeight - OVERLAP_PX) * (direction === "down" ? 1 : -1);
-    window.scrollBy({ top: delta, left: 0, behavior: "auto" });
-  };
-  var buttonClass = "w-12 h-12 flex items-center justify-center rounded-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-md text-gray-700 dark:text-gray-200 hover:text-black dark:hover:text-white active:bg-gray-100 dark:active:bg-gray-700";
+  var buttonClass = "p-4 leading-none rounded-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-md text-gray-700 dark:text-gray-200 hover:text-black dark:hover:text-white active:bg-gray-100 dark:active:bg-gray-700";
   var ScrollButtons = () => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "fixed bottom-4 right-4 flex flex-col gap-2 z-50", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", "aria-label": "Scroll up", className: buttonClass, onClick: () => scrollByViewport("up"), children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Chevron, { direction: "up", className: "w-4 h-4" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", "aria-label": "Scroll down", className: buttonClass, onClick: () => scrollByViewport("down"), children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Chevron, { direction: "down", className: "w-4 h-4" }) })
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", "aria-label": "Scroll up", className: buttonClass, "data-scroll": "up", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Chevron, { direction: "up", className: "block w-4 h-4" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", "aria-label": "Scroll down", className: buttonClass, "data-scroll": "down", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Chevron, { direction: "down", className: "block w-4 h-4" }) })
   ] });
 
   // src/components/App.tsx
   var import_jsx_runtime3 = __toESM(require_jsx_runtime());
   var collator = new Intl.Collator("fr", { sensitivity: "base" });
   var App = ({ ebooks: ebooks2 }) => {
+    const [hydrated, setHydrated] = (0, import_react.useState)(false);
     const [sortKey, setSortKey] = (0, import_react.useState)("author");
     const [sortDir, setSortDir] = (0, import_react.useState)("asc");
+    (0, import_react.useEffect)(() => {
+      setHydrated(true);
+    }, []);
     const sortedEbooks = (0, import_react.useMemo)(() => {
+      if (!hydrated) return ebooks2;
       const copy = [...ebooks2];
       copy.sort((a, b) => {
         const cmp = collator.compare(a[sortKey] || "", b[sortKey] || "");
         return sortDir === "asc" ? cmp : -cmp;
       });
       return copy;
-    }, [ebooks2, sortKey, sortDir]);
+    }, [ebooks2, sortKey, sortDir, hydrated]);
     const handleSort = (key) => {
+      if (!hydrated) return;
       if (key === sortKey) {
         setSortDir(sortDir === "asc" ? "desc" : "asc");
       } else {
@@ -19656,10 +19657,10 @@
       }
     };
     const renderArrow = (key) => {
-      if (key !== sortKey) return null;
+      if (!hydrated || key !== sortKey) return null;
       return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Chevron, { direction: sortDir === "asc" ? "up" : "down" });
     };
-    const headerClass = "text-left p-4 md:px-6 font-semibold text-gray-700 dark:text-gray-300 cursor-pointer select-none hover:text-black dark:hover:text-white";
+    const headerClass = `text-left p-4 md:px-6 font-semibold text-gray-700 dark:text-gray-300 select-none ${hydrated ? "cursor-pointer hover:text-black dark:hover:text-white" : ""}`;
     const headerInnerClass = "inline-flex items-center gap-2 leading-none";
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("main", { className: "p-4 md:p-8 max-w-[1920px] mx-auto", children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h1", { className: "text-4xl md:text-5xl font-medium tracking-tight text-center dark:text-white text-black", children: "Ebooks" }),

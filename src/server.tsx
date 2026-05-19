@@ -35,6 +35,7 @@ app.get("/", async (req, res) => {
       </head>
       <body class="font-serif bg-[#f7f7f7] text-lg">
         <div id="root">${html}</div>
+        <script src="/scroll-buttons.js"></script>
         <script>window.__INITIAL_DATA__ = ${serializedData};</script>
         <script src="/client.js" defer></script>
       </body>

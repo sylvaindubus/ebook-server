@@ -3,9 +3,9 @@ type Props = {
   className?: string;
 };
 
-export const Chevron = ({ direction = "up", className = "w-3 h-3" }: Props) => (
+export const Chevron = ({ direction = "up", className = "inline-block w-3 h-3" }: Props) => (
   <svg
-    className={`inline-block transition-transform ${className} ${direction === "down" ? "rotate-180" : ""}`}
+    className={className}
     viewBox="-1 -2 12 10"
     fill="none"
     stroke="currentColor"
@@ -14,6 +14,6 @@ export const Chevron = ({ direction = "up", className = "w-3 h-3" }: Props) => (
     strokeLinejoin="round"
     aria-hidden="true"
   >
-    <path d="M1 5 L5 1 L9 5" />
+    <path d={direction === "down" ? "M1 1 L5 5 L9 1" : "M1 5 L5 1 L9 5"} />
   </svg>
 );
