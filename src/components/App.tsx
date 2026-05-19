@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import formatLanguage from "../utils/formatLanguage";
 import capitalizeWords from "../utils/capitalizeWords";
 import { Chevron } from "./Chevron";
+import { ScrollButtons } from "./ScrollButtons";
 import { Ebook } from "../types";
 
 type Props = {
@@ -41,6 +42,7 @@ export const App = ({ ebooks }: Props) => {
   };
 
   const headerClass = "text-left p-4 md:px-6 font-semibold text-gray-700 dark:text-gray-300 cursor-pointer select-none hover:text-black dark:hover:text-white";
+  const headerInnerClass = "inline-flex items-center gap-2 leading-none";
 
   return (
     <main className="p-4 md:p-8 max-w-[1920px] mx-auto">
@@ -52,9 +54,15 @@ export const App = ({ ebooks }: Props) => {
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-gray-300 dark:border-gray-600">
-              <th className={headerClass} onClick={() => handleSort("author")}>Author {renderArrow("author")}</th>
-              <th className={headerClass} onClick={() => handleSort("title")}>Title {renderArrow("title")}</th>
-              <th className={`hidden md:table-cell ${headerClass}`} onClick={() => handleSort("language")}>Language {renderArrow("language")}</th>
+              <th className={headerClass} onClick={() => handleSort("author")}>
+                <span className={headerInnerClass}>Author{renderArrow("author")}</span>
+              </th>
+              <th className={headerClass} onClick={() => handleSort("title")}>
+                <span className={headerInnerClass}>Title{renderArrow("title")}</span>
+              </th>
+              <th className={`hidden md:table-cell ${headerClass}`} onClick={() => handleSort("language")}>
+                <span className={headerInnerClass}>Language{renderArrow("language")}</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -84,6 +92,7 @@ export const App = ({ ebooks }: Props) => {
           </tbody>
         </table>
       </div>
+      <ScrollButtons />
     </main>
   );
 };
